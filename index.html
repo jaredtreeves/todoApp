@@ -1,0 +1,68 @@
+<!doctype html >
+<html lang="en" ng-app="todoApp">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Template • TodoMVC</title>
+		<link rel="stylesheet" href="bower_components/todomvc-common/base.css">
+
+        <style>
+            [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+                display: none !important;
+            }
+        </style>
+
+	</head>
+	<body ng-controller="todoCtrl" ng-clock>
+		<section id="todoapp">
+			<header id="header">
+				<h1>todos</h1>
+                <form ng-submit="submitItem()">
+				    <input ng-model="formCurrentName" id="new-todo" placeholder="What needs to be done?" auto-Focus>
+                </form>
+			</header>
+
+			<section ng-hide="todoListEmpty" id="main">
+				<input id="toggle-all" type="checkbox" ng-model="selectAllChecked" ng-change="toggleAll()">
+				<label for="toggle-all">Mark all as complete</label>
+				<ul id="todo-list" >
+                    <li ng-class="{completed: item.Completed,  editing: item.isEditing}" ng-repeat="item in todoList"  ng-dblclick="setAsEditing(item)">
+                            <div class="view" ng-hide="item.isEditing">
+                                <input class="toggle" type="checkbox" ng-model="item.Completed" ng-change="checkIfAllSelected()" >
+                                <label>{{item.title}}</label>
+                                <button class="destroy" ng-click="removeItem(item)"></button>
+                            </div>
+                            <div class="edit" ng-show="item.isEditing">
+                                <form ng-submit="editItem(item)">
+                                    <input ng-model="editItemTitle.title" type="text"
+                                           style="border:none; outline:none; font-size: 24px"
+                                           auto-Focus="item.isEditing" ng-value="item.title" ng-blur="item.isEditing = false">
+                                </form>
+                            </div>
+                    </li>
+				</ul>
+			</section>
+
+			<footer ng-hide="todoListEmpty" id="footer">
+				<span id="todo-count"><strong>{{itemsLeft()}}</strong>
+                    <text ng-if="itemsLeft() > 1">items left</text>
+                    <text ng-if="itemsLeft() <= 1">item left</text>
+                </span>
+
+                <button ng-hide="completedCount() === 0" id="clear-completed" ng-click="removeCompleted()"> {{completedCount()}}
+                    <text ng-if="itemsLeft() > 1">items compete</text>
+                    <text ng-if="itemsLeft() <= 1">item complete</text>
+                </button>
+            </footer>
+		</section>
+
+		<footer id="info">
+			<p>Created by Jared Reeves</p>
+		</footer>
+
+        <script src="js/plugins/thirdParty/angular.min.js"></script>
+        <script src="js/models/todoModule.js"></script>
+        <script src="js/controllers/todoCtrl.js"></script>
+        <script src="js/directives/focusDirective.js"></script>
+	</body>
+</html>
